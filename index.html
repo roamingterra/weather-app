@@ -9,121 +9,146 @@
     <title>Weather App</title>
   </head>
   <body>
-    <input type="text" placeholder="Search for City.." />
-    <div id="location">Montreal</div>
-    <div id="weather-today">
-      <div class="block-1"><!-- img --></div>
-      <div class="block-2">
-        <div class="temperature-today">0°C</div>
-      </div>
-      <div class="block-3">
-        <div class="precipitation-today">Precipitation: 1%</div>
-        <div class="humidity-today">Humidity: 48%</div>
-        <div class="wind-today">Wind: 10km/h</div>
-      </div>
-      <div class="block-4">
-        <div>Weather</div>
-        <div class="day-and-time-today">Wednesday 5:00 p.m.</div>
-        <div class="condition-today">Mostly cloudy</div>
-      </div>
-    </div>
-    <div id="weather-forecast-trihoral">
-      <div class="time-increment-1">
-        <div class="temperature">0°C</div>
-        <div class="time">6p.m.</div>
-      </div>
-      <div class="time-increment-2">
-        <div class="temperature">0°C</div>
-        <div class="time">9p.m.</div>
-      </div>
-      <div class="time-increment-3">
-        <div class="temperature">1°C</div>
-        <div class="time">12a.m.</div>
-      </div>
-      <div class="time-increment-4">
-        <div class="temperature">0°C</div>
-        <div class="time">3a.m.</div>
-      </div>
-      <div class="time-increment-5">
-        <div class="temperature">1°C</div>
-        <div class="time">6a.m.</div>
-      </div>
-      <div class="time-increment-6">
-        <div class="temperature">2°C</div>
-        <div class="time">9a.m.</div>
-      </div>
-      <div class="time-increment-7">
-        <div class="temperature">3°C</div>
-        <div class="time">12p.m.</div>
-      </div>
-      <div class="time-increment-8">
-        <div class="temperature">4°C</div>
-        <div class="time">3p.m.</div>
-      </div>
-    </div>
-    <div id="weather-forecast-day">
-      <div class="day-1">
-        <div class="day-of-week">Wed</div>
-        <!-- img -->
-        <div class="temperature-day">
-          <div>1°C</div>
-          <div>-1°C</div>
+    <video autoplay muted loop id="myVideo">
+      <source src="" type="video/mp4" />
+    </video>
+    <div id="content-wrapper">
+      <input type="text" placeholder="Search for City.." />
+      <div id="location">Montreal</div>
+      <div id="weather-today">
+        <div class="block-1">
+          <img src="" alt="weather condition icon" />
+        </div>
+        <div class="block-2">
+          <div class="temperature-today">0°C</div>
+        </div>
+        <div class="block-3">
+          <div class="precipitation-today">Precipitation: 1%</div>
+          <div class="humidity-today">Humidity: 48%</div>
+          <div class="wind-today">Wind: 10km/h</div>
+        </div>
+        <div class="block-4-wrapper">
+          <div class="block-4">
+            <div>Weather</div>
+            <div class="day-and-time-today">Wed 5:00 p.m.</div>
+            <div class="condition-today">Mostly cloudy</div>
+          </div>
         </div>
       </div>
-      <div class="day-2">
-        <div class="day-of-week">Thu</div>
-        <!-- img -->
-        <div class="temperature-day">
-          <div>5°C</div>
-          <div>0°C</div>
+      <div id="weather-forecast-trihoral">
+        <div class="time-increment">
+          <div class="temperature temperature-1">0°C</div>
+          <div class="time 1 time-1">6p.m.</div>
+        </div>
+        <div class="time-increment">
+          <div class="temperature temperature-2">0°C</div>
+          <div class="time time-2">9p.m.</div>
+        </div>
+        <div class="time-increment">
+          <div class="temperature temperature-3">1°C</div>
+          <div class="time time-3">12a.m.</div>
+        </div>
+        <div class="time-increment">
+          <div class="temperature temperature-4">0°C</div>
+          <div class="time time-4">3a.m.</div>
+        </div>
+        <div class="time-increment">
+          <div class="temperature temperature-5">1°C</div>
+          <div class="time time-5">6a.m.</div>
+        </div>
+        <div class="time-increment">
+          <div class="temperature temperature-6">2°C</div>
+          <div class="time time-6">9a.m.</div>
+        </div>
+        <div class="time-increment">
+          <div class="temperature temperature-7">3°C</div>
+          <div class="time time-7">12p.m.</div>
+        </div>
+        <div class="time-increment">
+          <div class="temperature temperature-8">4°C</div>
+          <div class="time time-8">3p.m.</div>
         </div>
       </div>
-      <div class="day-3">
-        <div class="day-of-week">Fri</div>
-        <!-- img -->
-        <div class="temperature-day">
-          <div>5°C</div>
-          <div>-3°C</div>
+      <div id="weather-forecast-day">
+        <div class="day 1">
+          <div class="day-of-week day-1">Wed</div>
+          <div class="icon icon-1">
+            <img src="" alt="weather condition icon" />
+          </div>
+          <div class="temperature-day temp-day-1">
+            <div>1°C</div>
+            <div>-1°C</div>
+          </div>
         </div>
-      </div>
-      <div class="day-4">
-        <div class="day-of-week">Sat</div>
-        <!-- img -->
-        <div class="temperature-day">
-          <div>4°C</div>
-          <div>-2°C</div>
+        <div class="day 2">
+          <div class="day-of-week day-2">Thu</div>
+          <div class="icon icon-2">
+            <img src="" alt="weather condition icon" />
+          </div>
+          <div class="temperature-day temp-day-2">
+            <div>5°C</div>
+            <div>0°C</div>
+          </div>
         </div>
-      </div>
-      <div class="day-5">
-        <div class="day-of-week">Sun</div>
-        <!-- img -->
-        <div class="temperature-day">
-          <div>4°C</div>
-          <div>-1°C</div>
+        <div class="day 3">
+          <div class="day-of-week day-3">Fri</div>
+          <div class="icon icon-3">
+            <img src="" alt="weather condition icon" />
+          </div>
+          <div class="temperature-day temp-day-3">
+            <div>5°C</div>
+            <div>-3°C</div>
+          </div>
         </div>
-      </div>
-      <div class="day-6">
-        <div class="day-of-week">Mon</div>
-        <!-- img -->
-        <div class="temperature-day">
-          <div>4°C</div>
-          <div>-4°C</div>
+        <div class="day 4">
+          <div class="day-of-week day-4">Sat</div>
+          <div class="icon icon-4">
+            <img src="" alt="weather condition icon" />
+          </div>
+          <div class="temperature-day temp-day-4">
+            <div>4°C</div>
+            <div>-2°C</div>
+          </div>
         </div>
-      </div>
-      <div class="day-7">
-        <div class="day-of-week">Tue</div>
-        <!-- img -->
-        <div class="temperature-day">
-          <div>3°C</div>
-          <div>-2°C</div>
+        <div class="day 5">
+          <div class="day-of-week day-5">Sun</div>
+          <div class="icon icon-5">
+            <img src="" alt="weather condition icon" />
+          </div>
+          <div class="temperature-day temp-day-5">
+            <div>4°C</div>
+            <div>-1°C</div>
+          </div>
         </div>
-      </div>
-      <div class="day-8">
-        <div class="day-of-week">Wed</div>
-        <!-- img -->
-        <div class="temperature-day">
-          <div>3°C</div>
-          <div>-3°C</div>
+        <div class="day 6">
+          <div class="day-of-week day-6">Mon</div>
+          <div class="icon icon-6">
+            <img src="" alt="weather condition icon" />
+          </div>
+          <div class="temperature-day temp-day-6">
+            <div>4°C</div>
+            <div>-4°C</div>
+          </div>
+        </div>
+        <div class="day 7">
+          <div class="day-of-week day-7">Tue</div>
+          <div class="icon icon-7">
+            <img src="" alt="weather condition icon" />
+          </div>
+          <div class="temperature-day temp-day-7">
+            <div>3°C</div>
+            <div>-2°C</div>
+          </div>
+        </div>
+        <div class="day 8">
+          <div class="day-of-week day-8">Wed</div>
+          <div class="icon icon-8">
+            <img src="" alt="weather condition icon" />
+          </div>
+          <div class="temperature-day temp-day-8">
+            <div>3°C</div>
+            <div>-3°C</div>
+          </div>
         </div>
       </div>
     </div>
