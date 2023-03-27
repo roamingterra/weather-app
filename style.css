@@ -3,6 +3,14 @@
   src: url(./fonts/Roboto-Medium.ttf);
 }
 
+:root {
+  --night-container-background: rgba(32, 9, 116, 0.3);
+  --sunny-container-background: rgba(14, 67, 136, 0.3);
+  --fog-container-background: rgba(115, 92, 146, 0.3);
+  --overcast-rain-container-background: rgba(95, 98, 102, 0.3);
+  --snow-lightening-container-background: rgba(64, 66, 68, 0.3);
+}
+
 #myVideo {
   position: fixed;
   right: 0;
@@ -10,7 +18,7 @@
   min-width: 100%;
   min-height: 100%;
   transform: translateX(calc((100% - 100vw) / 2));
-  z-index: -1;
+  z-index: -2;
 }
 
 html,
@@ -31,6 +39,9 @@ body {
   width: 695px;
   min-width: 300px;
   margin: 0 40px;
+  border-radius: 20px;
+  background-color: rgba(2, 0, 8, 0.3);
+  padding: 20px;
 }
 
 input {

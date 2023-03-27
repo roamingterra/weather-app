@@ -185,7 +185,24 @@ async function inputFormHandler(locationOnProgramStartup) {
 // APPEND DATA TO THE DOM
 function domManipulation(results) {
   // Declare elements
+  const rootStyles = window.getComputedStyle(document.documentElement);
+  const nightContainerBackground = rootStyles.getPropertyValue(
+    "--night-container-background"
+  );
+  const sunnyContainerBackground = rootStyles.getPropertyValue(
+    "--sunny-container-background"
+  );
+  const fogContainerBackground = rootStyles.getPropertyValue(
+    "--fog-container-background"
+  );
+  const overcastRainContainerBackground = rootStyles.getPropertyValue(
+    "--overcast-rain-container-background"
+  );
+  const snowLighteningContainerBackground = rootStyles.getPropertyValue(
+    "--snow-lightening-container-background"
+  );
   const background = document.querySelector("video");
+  const contentWrapper = document.querySelector("#content-wrapper");
   const location = document.querySelector("#location");
   const block1 = document.querySelector(".block-1");
   const temperatureToday = document.querySelector(".temperature-today");
@@ -246,31 +263,35 @@ function domManipulation(results) {
   // Append updated weather info to the dom
   // Change background
   //   background.setAttribute("src", `./images/backgrounds/night.mp4`);
-  //   //   background.setAttribute("src", `./images/backgrounds/sunny.mp4`); // Need to change font color for non highlighted content
-  //   //   background.setAttribute("src", `./images/backgrounds/overcast.mp4`); // Need to change font color for non highlighted content
-  //   //   background.setAttribute("src", `./images/backgrounds/fog.mp4`); // Need to change font color for non highlighted content
-  //   //   background.setAttribute("src", `./images/backgrounds/rain.mp4`);
-  //   //   background.setAttribute("src", `./images/backgrounds/snow.mp4`); // Need to change font color for non highlighted content
-  //   //   background.setAttribute("src", `./images/backgrounds/lightening.mp4`);
+  //   background.setAttribute("src", `./images/backgrounds/sunny.mp4`); // Need to change font color for non highlighted content
+  //   background.setAttribute("src", `./images/backgrounds/overcast.mp4`); // Need to change font color for non highlighted content
+  //   background.setAttribute("src", `./images/backgrounds/fog.mp4`); // Need to change font color for non highlighted content
+  //   background.setAttribute("src", `./images/backgrounds/rain.mp4`);
+  //   background.setAttribute("src", `./images/backgrounds/snow.mp4`); // Need to change font color for non highlighted content
+  //   background.setAttribute("src", `./images/backgrounds/lightening.mp4`);
 
   if (!results[0].isDay) {
     background.setAttribute("src", `./images/backgrounds/night.mp4`);
+    contentWrapper.style.backgroundColor = nightContainerBackground;
   } else if (
     results[0].condition === "Sunny" ||
     results[0].condition === "Partly cloudy"
   ) {
     background.setAttribute("src", `./images/backgrounds/sunny.mp4`);
+    contentWrapper.style.backgroundColor = sunnyContainerBackground;
   } else if (
     results[0].condition === "Cloudy" ||
     results[0].condition === "Overcast"
   ) {
     background.setAttribute("src", `./images/backgrounds/overcast.mp4`);
+    contentWrapper.style.backgroundColor = overcastRainContainerBackground;
   } else if (
     results[0].condition === "Mist" ||
     results[0].condition === "Fog" ||
     results[0].condition === "Freezing Fog"
   ) {
     background.setAttribute("src", `./images/backgrounds/fog.mp4`);
+    contentWrapper.style.backgroundColor = fogContainerBackground;
   } else if (
     results[0].condition === "Patchy rain possible" ||
     results[0].condition === "Patchy rain possible" ||
@@ -302,6 +323,7 @@ function domManipulation(results) {
     results[0].condition === "Moderate or heavy showers of ice pellets"
   ) {
     background.setAttribute("src", `./images/backgrounds/rain.mp4`);
+    contentWrapper.style.backgroundColor = overcastRainContainerBackground;
   } else if (
     results[0].condition === "Patchy light snow" ||
     results[0].condition === "Light snow" ||
@@ -314,6 +336,7 @@ function domManipulation(results) {
     results[0].condition === "Moderate or heavy snow showers"
   ) {
     background.setAttribute("src", `./images/backgrounds/snow.mp4`);
+    contentWrapper.style.backgroundColor = snowLighteningContainerBackground;
   } else if (
     results[0].condition === "Patchy light rain with thunder" ||
     results[0].condition === "Moderate or heavy rain with thunder" ||
@@ -321,6 +344,7 @@ function domManipulation(results) {
     results[0].condition === "Moderate or heavy snow with thunder"
   ) {
     background.setAttribute("src", `./images/backgrounds/lightening.mp4`);
+    contentWrapper.style.backgroundColor = snowLighteningContainerBackground;
   }
 
   // Change location
