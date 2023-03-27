@@ -6,7 +6,6 @@ async function getWeatherToday(location) {
       { mode: "cors" }
     );
     const json = await data.json();
-    console.log(json);
     const locationAPI = `${json.location.name}, ${json.location.country}`;
     const currentDateAndTime = json.current.last_updated;
     const regexTime = /(\d{2}):(\d{2})$/;
@@ -183,7 +182,7 @@ async function inputFormHandler(locationOnProgramStartup) {
 }
 
 // APPEND DATA TO THE DOM
-function domManipulation(results) {
+function domManipulation() {
   // Declare elements
   const rootStyles = window.getComputedStyle(document.documentElement);
   const nightContainerBackground = rootStyles.getPropertyValue(
@@ -288,7 +287,7 @@ function domManipulation(results) {
 
   // Append updated weather info to the dom
   // Change background
-  if (!results[0].isDay) {
+  if (!locationInfo[0].isDay) {
     background.setAttribute("src", `./images/backgrounds/night.mp4`);
     contentWrapper.style.backgroundColor = nightContainerBackground;
     block3.style.color = secondaryContentNightFontColor;
@@ -301,8 +300,8 @@ function domManipulation(results) {
       element.style.color = secondaryContentNightFontColor;
     });
   } else if (
-    results[0].condition === "Sunny" ||
-    results[0].condition === "Partly cloudy"
+    locationInfo[0].condition === "Sunny" ||
+    locationInfo[0].condition === "Partly cloudy"
   ) {
     background.setAttribute("src", `./images/backgrounds/sunny.mp4`);
     contentWrapper.style.backgroundColor = sunnyContainerBackground;
@@ -316,8 +315,8 @@ function domManipulation(results) {
       element.style.color = secondaryContentSunnyFontColor;
     });
   } else if (
-    results[0].condition === "Cloudy" ||
-    results[0].condition === "Overcast"
+    locationInfo[0].condition === "Cloudy" ||
+    locationInfo[0].condition === "Overcast"
   ) {
     background.setAttribute("src", `./images/backgrounds/overcast.mp4`);
     contentWrapper.style.backgroundColor = overcastRainContainerBackground;
@@ -331,9 +330,9 @@ function domManipulation(results) {
       element.style.color = secondaryContentOvercastFontColor;
     });
   } else if (
-    results[0].condition === "Mist" ||
-    results[0].condition === "Fog" ||
-    results[0].condition === "Freezing Fog"
+    locationInfo[0].condition === "Mist" ||
+    locationInfo[0].condition === "Fog" ||
+    locationInfo[0].condition === "Freezing Fog"
   ) {
     background.setAttribute("src", `./images/backgrounds/fog.mp4`);
     contentWrapper.style.backgroundColor = fogContainerBackground;
@@ -347,34 +346,34 @@ function domManipulation(results) {
       element.style.color = secondaryContentFogFontColor;
     });
   } else if (
-    results[0].condition === "Patchy rain possible" ||
-    results[0].condition === "Patchy rain possible" ||
-    results[0].condition === "Patchy sleet possible" ||
-    results[0].condition === "Patchy sleet possible" ||
-    results[0].condition === "Patchy freezing drizzle possible" ||
-    results[0].condition === "Patchy light drizzle" ||
-    results[0].condition === "Light drizzle" ||
-    results[0].condition === "Freezing drizzle" ||
-    results[0].condition === "Heavy freezing drizzle" ||
-    results[0].condition === "Patchy light rain" ||
-    results[0].condition === "Light rain" ||
-    results[0].condition === "Moderate rain at times" ||
-    results[0].condition === "Moderate rain" ||
-    results[0].condition === "Heavy rain at times" ||
-    results[0].condition === "Heavy rain" ||
-    results[0].condition === "Light freezing rain" ||
-    results[0].condition === "Moderate or heavy freezing rain" ||
-    results[0].condition === "Light sleet" ||
-    results[0].condition === "Moderate or heavy sleet" ||
-    results[0].condition === "Moderate or heavy sleet" ||
-    results[0].condition === "Ice pellets" ||
-    results[0].condition === "Light rain shower" ||
-    results[0].condition === "Moderate or heavy rain shower" ||
-    results[0].condition === "Torrential rain shower" ||
-    results[0].condition === "Light sleet showers" ||
-    results[0].condition === "Moderate or heavy sleet showers" ||
-    results[0].condition === "Light showers of ice pellets" ||
-    results[0].condition === "Moderate or heavy showers of ice pellets"
+    locationInfo[0].condition === "Patchy rain possible" ||
+    locationInfo[0].condition === "Patchy rain possible" ||
+    locationInfo[0].condition === "Patchy sleet possible" ||
+    locationInfo[0].condition === "Patchy sleet possible" ||
+    locationInfo[0].condition === "Patchy freezing drizzle possible" ||
+    locationInfo[0].condition === "Patchy light drizzle" ||
+    locationInfo[0].condition === "Light drizzle" ||
+    locationInfo[0].condition === "Freezing drizzle" ||
+    locationInfo[0].condition === "Heavy freezing drizzle" ||
+    locationInfo[0].condition === "Patchy light rain" ||
+    locationInfo[0].condition === "Light rain" ||
+    locationInfo[0].condition === "Moderate rain at times" ||
+    locationInfo[0].condition === "Moderate rain" ||
+    locationInfo[0].condition === "Heavy rain at times" ||
+    locationInfo[0].condition === "Heavy rain" ||
+    locationInfo[0].condition === "Light freezing rain" ||
+    locationInfo[0].condition === "Moderate or heavy freezing rain" ||
+    locationInfo[0].condition === "Light sleet" ||
+    locationInfo[0].condition === "Moderate or heavy sleet" ||
+    locationInfo[0].condition === "Moderate or heavy sleet" ||
+    locationInfo[0].condition === "Ice pellets" ||
+    locationInfo[0].condition === "Light rain shower" ||
+    locationInfo[0].condition === "Moderate or heavy rain shower" ||
+    locationInfo[0].condition === "Torrential rain shower" ||
+    locationInfo[0].condition === "Light sleet showers" ||
+    locationInfo[0].condition === "Moderate or heavy sleet showers" ||
+    locationInfo[0].condition === "Light showers of ice pellets" ||
+    locationInfo[0].condition === "Moderate or heavy showers of ice pellets"
   ) {
     background.setAttribute("src", `./images/backgrounds/rain.mp4`);
     contentWrapper.style.backgroundColor = overcastRainContainerBackground;
@@ -388,15 +387,15 @@ function domManipulation(results) {
       element.style.color = secondaryContentRainFontColor;
     });
   } else if (
-    results[0].condition === "Patchy light snow" ||
-    results[0].condition === "Light snow" ||
-    results[0].condition === "Patchy moderate snow" ||
-    results[0].condition === "Moderate snow" ||
-    results[0].condition === "Patchy heavy snow" ||
-    results[0].condition === "Heavy snow" ||
-    results[0].condition === "Heavy snow" ||
-    results[0].condition === "Light snow showers" ||
-    results[0].condition === "Moderate or heavy snow showers"
+    locationInfo[0].condition === "Patchy light snow" ||
+    locationInfo[0].condition === "Light snow" ||
+    locationInfo[0].condition === "Patchy moderate snow" ||
+    locationInfo[0].condition === "Moderate snow" ||
+    locationInfo[0].condition === "Patchy heavy snow" ||
+    locationInfo[0].condition === "Heavy snow" ||
+    locationInfo[0].condition === "Heavy snow" ||
+    locationInfo[0].condition === "Light snow showers" ||
+    locationInfo[0].condition === "Moderate or heavy snow showers"
   ) {
     background.setAttribute("src", `./images/backgrounds/snow.mp4`);
     contentWrapper.style.backgroundColor = snowLighteningContainerBackground;
@@ -410,10 +409,10 @@ function domManipulation(results) {
       element.style.color = secondaryContentSnowFontColor;
     });
   } else if (
-    results[0].condition === "Patchy light rain with thunder" ||
-    results[0].condition === "Moderate or heavy rain with thunder" ||
-    results[0].condition === "Patchy light snow with thunder" ||
-    results[0].condition === "Moderate or heavy snow with thunder"
+    locationInfo[0].condition === "Patchy light rain with thunder" ||
+    locationInfo[0].condition === "Moderate or heavy rain with thunder" ||
+    locationInfo[0].condition === "Patchy light snow with thunder" ||
+    locationInfo[0].condition === "Moderate or heavy snow with thunder"
   ) {
     background.setAttribute("src", `./images/backgrounds/lightening.mp4`);
     contentWrapper.style.backgroundColor = snowLighteningContainerBackground;
@@ -429,115 +428,169 @@ function domManipulation(results) {
   }
 
   // Change location
-  location.textContent = results[0].location;
+  location.textContent = locationInfo[0].location;
 
   // Today's weather icon
   const imgBlock1 = document.querySelector(".block-1 > img");
   const regex = /(?<=\/)\d+(?=\.\w+$)/;
-  const match = results[0].conditionIcon.match(regex)[0];
+  const match = locationInfo[0].conditionIcon.match(regex)[0];
   //   imgBlock1.setAttribute("alt", "weather condition icon");
-  if (results[0].isDay) {
+  if (locationInfo[0].isDay) {
     imgBlock1.setAttribute("src", `./images/day/${match}.png`);
   } else {
     imgBlock1.setAttribute("src", `./images/night/${match}.png`);
   }
 
   // Today's weather temperature
-  temperatureToday.textContent = `${results[0].temperatureCelsius}°`;
+  if (isCelsius) {
+    temperatureToday.textContent = `${locationInfo[0].temperatureCelsius}°C`;
+  } else {
+    temperatureToday.textContent = `${locationInfo[0].temperatureFahrenheit}°F`;
+  }
   // Today's weather block 3 info
-  precipitationToday.textContent = `Precipitation: ${results[0].precipitationChance}%`;
-  humidityToday.textContent = `Humidity: ${results[0].humidity}%`;
-  windToday.textContent = `Wind: ${results[0].wind_kph}Km/h`;
+  precipitationToday.textContent = `Precipitation: ${locationInfo[0].precipitationChance}%`;
+  humidityToday.textContent = `Humidity: ${locationInfo[0].humidity}%`;
+  if (isCelsius) {
+    windToday.textContent = `Wind: ${locationInfo[0].wind_kph}Km/h`;
+  } else {
+    windToday.textContent = `Wind: ${locationInfo[0].wind_mph}mph`;
+  }
 
   // Today's weather block 4 info
-  dayAndTimeToday.textContent = `${results[0].currentDayOfWeek} ${results[0].currentTime}`;
-  conditionToday.textContent = `${results[0].condition}`;
+  dayAndTimeToday.textContent = `${locationInfo[0].currentDayOfWeek} ${locationInfo[0].currentTime}`;
+  conditionToday.textContent = `${locationInfo[0].condition}`;
 
   // Weather forecast trihoral
-  timeIncrementTemperature1.textContent = `${results[1][0].tempCelsius}°C`;
-  timeIncrementTemperature2.textContent = `${results[1][1].tempCelsius}°C`;
-  timeIncrementTemperature3.textContent = `${results[1][2].tempCelsius}°C`;
-  timeIncrementTemperature4.textContent = `${results[1][3].tempCelsius}°C`;
-  timeIncrementTemperature5.textContent = `${results[1][4].tempCelsius}°C`;
-  timeIncrementTemperature6.textContent = `${results[1][5].tempCelsius}°C`;
-  timeIncrementTemperature7.textContent = `${results[1][6].tempCelsius}°C`;
-  timeIncrementTemperature8.textContent = `${results[1][7].tempCelsius}°C`;
-  timeIncrementTime1.textContent = `${results[1][0].timeOfDay}`;
-  timeIncrementTime2.textContent = `${results[1][1].timeOfDay}`;
-  timeIncrementTime3.textContent = `${results[1][2].timeOfDay}`;
-  timeIncrementTime4.textContent = `${results[1][3].timeOfDay}`;
-  timeIncrementTime5.textContent = `${results[1][4].timeOfDay}`;
-  timeIncrementTime6.textContent = `${results[1][5].timeOfDay}`;
-  timeIncrementTime7.textContent = `${results[1][6].timeOfDay}`;
-  timeIncrementTime8.textContent = `${results[1][7].timeOfDay}`;
+  if (isCelsius) {
+    timeIncrementTemperature1.textContent = `${locationInfo[1][0].tempCelsius}°C`;
+    timeIncrementTemperature2.textContent = `${locationInfo[1][1].tempCelsius}°C`;
+    timeIncrementTemperature3.textContent = `${locationInfo[1][2].tempCelsius}°C`;
+    timeIncrementTemperature4.textContent = `${locationInfo[1][3].tempCelsius}°C`;
+    timeIncrementTemperature5.textContent = `${locationInfo[1][4].tempCelsius}°C`;
+    timeIncrementTemperature6.textContent = `${locationInfo[1][5].tempCelsius}°C`;
+    timeIncrementTemperature7.textContent = `${locationInfo[1][6].tempCelsius}°C`;
+    timeIncrementTemperature8.textContent = `${locationInfo[1][7].tempCelsius}°C`;
+  } else {
+    timeIncrementTemperature1.textContent = `${locationInfo[1][0].tempFahrenheit}°F`;
+    timeIncrementTemperature2.textContent = `${locationInfo[1][1].tempFahrenheit}°F`;
+    timeIncrementTemperature3.textContent = `${locationInfo[1][2].tempFahrenheit}°F`;
+    timeIncrementTemperature4.textContent = `${locationInfo[1][3].tempFahrenheit}°F`;
+    timeIncrementTemperature5.textContent = `${locationInfo[1][4].tempFahrenheit}°F`;
+    timeIncrementTemperature6.textContent = `${locationInfo[1][5].tempFahrenheit}°F`;
+    timeIncrementTemperature7.textContent = `${locationInfo[1][6].tempFahrenheit}°F`;
+    timeIncrementTemperature8.textContent = `${locationInfo[1][7].tempFahrenheit}°F`;
+  }
+
+  timeIncrementTime1.textContent = `${locationInfo[1][0].timeOfDay}`;
+  timeIncrementTime2.textContent = `${locationInfo[1][1].timeOfDay}`;
+  timeIncrementTime3.textContent = `${locationInfo[1][2].timeOfDay}`;
+  timeIncrementTime4.textContent = `${locationInfo[1][3].timeOfDay}`;
+  timeIncrementTime5.textContent = `${locationInfo[1][4].timeOfDay}`;
+  timeIncrementTime6.textContent = `${locationInfo[1][5].timeOfDay}`;
+  timeIncrementTime7.textContent = `${locationInfo[1][6].timeOfDay}`;
+  timeIncrementTime8.textContent = `${locationInfo[1][7].timeOfDay}`;
 
   // Weather forecast daily
-  dayOfWeek1.textContent = `${results[2][0].dayOfTheWeek}`;
-  dayOfWeek2.textContent = `${results[2][1].dayOfTheWeek}`;
-  dayOfWeek3.textContent = `${results[2][2].dayOfTheWeek}`;
-  dayOfWeek4.textContent = `${results[2][3].dayOfTheWeek}`;
-  dayOfWeek5.textContent = `${results[2][4].dayOfTheWeek}`;
-  dayOfWeek6.textContent = `${results[2][5].dayOfTheWeek}`;
-  dayOfWeek7.textContent = `${results[2][6].dayOfTheWeek}`;
-  dayOfWeek8.textContent = `${results[2][7].dayOfTheWeek}`;
+  dayOfWeek1.textContent = `${locationInfo[2][0].dayOfTheWeek}`;
+  dayOfWeek2.textContent = `${locationInfo[2][1].dayOfTheWeek}`;
+  dayOfWeek3.textContent = `${locationInfo[2][2].dayOfTheWeek}`;
+  dayOfWeek4.textContent = `${locationInfo[2][3].dayOfTheWeek}`;
+  dayOfWeek5.textContent = `${locationInfo[2][4].dayOfTheWeek}`;
+  dayOfWeek6.textContent = `${locationInfo[2][5].dayOfTheWeek}`;
+  dayOfWeek7.textContent = `${locationInfo[2][6].dayOfTheWeek}`;
+  dayOfWeek8.textContent = `${locationInfo[2][7].dayOfTheWeek}`;
 
   // Daily weather icons
   iconDay1.setAttribute(
     "src",
-    `./images/day/${results[2][0].conditionIcon}.png`
+    `./images/day/${locationInfo[2][0].conditionIcon}.png`
   );
   iconDay2.setAttribute(
     "src",
-    `./images/day/${results[2][1].conditionIcon}.png`
+    `./images/day/${locationInfo[2][1].conditionIcon}.png`
   );
   iconDay3.setAttribute(
     "src",
-    `./images/day/${results[2][2].conditionIcon}.png`
+    `./images/day/${locationInfo[2][2].conditionIcon}.png`
   );
   iconDay4.setAttribute(
     "src",
-    `./images/day/${results[2][3].conditionIcon}.png`
+    `./images/day/${locationInfo[2][3].conditionIcon}.png`
   );
   iconDay5.setAttribute(
     "src",
-    `./images/day/${results[2][4].conditionIcon}.png`
+    `./images/day/${locationInfo[2][4].conditionIcon}.png`
   );
   iconDay6.setAttribute(
     "src",
-    `./images/day/${results[2][5].conditionIcon}.png`
+    `./images/day/${locationInfo[2][5].conditionIcon}.png`
   );
   iconDay7.setAttribute(
     "src",
-    `./images/day/${results[2][6].conditionIcon}.png`
+    `./images/day/${locationInfo[2][6].conditionIcon}.png`
   );
   iconDay8.setAttribute(
     "src",
-    `./images/day/${results[2][7].conditionIcon}.png`
+    `./images/day/${locationInfo[2][7].conditionIcon}.png`
   );
 
   // Daily Temperatures
-  tempDay1High.textContent = `${results[2][0].maxTempCelsius}°C`;
-  tempDay1Low.textContent = `${results[2][0].minTempCelsius}°C`;
-  tempDay2High.textContent = `${results[2][1].maxTempCelsius}°C`;
-  tempDay2Low.textContent = `${results[2][1].minTempCelsius}°C`;
-  tempDay3High.textContent = `${results[2][2].maxTempCelsius}°C`;
-  tempDay3Low.textContent = `${results[2][2].minTempCelsius}°C`;
-  tempDay4High.textContent = `${results[2][3].maxTempCelsius}°C`;
-  tempDay4Low.textContent = `${results[2][3].minTempCelsius}°C`;
-  tempDay5High.textContent = `${results[2][4].maxTempCelsius}°C`;
-  tempDay5Low.textContent = `${results[2][4].minTempCelsius}°C`;
-  tempDay6High.textContent = `${results[2][5].maxTempCelsius}°C`;
-  tempDay6Low.textContent = `${results[2][5].minTempCelsius}°C`;
-  tempDay7High.textContent = `${results[2][6].maxTempCelsius}°C`;
-  tempDay7Low.textContent = `${results[2][6].minTempCelsius}°C`;
-  tempDay8High.textContent = `${results[2][7].maxTempCelsius}°C`;
-  tempDay8Low.textContent = `${results[2][7].minTempCelsius}°C`;
+  if (isCelsius) {
+    tempDay1High.textContent = `${locationInfo[2][0].maxTempCelsius}°C`;
+    tempDay1Low.textContent = `${locationInfo[2][0].minTempCelsius}°C`;
+    tempDay2High.textContent = `${locationInfo[2][1].maxTempCelsius}°C`;
+    tempDay2Low.textContent = `${locationInfo[2][1].minTempCelsius}°C`;
+    tempDay3High.textContent = `${locationInfo[2][2].maxTempCelsius}°C`;
+    tempDay3Low.textContent = `${locationInfo[2][2].minTempCelsius}°C`;
+    tempDay4High.textContent = `${locationInfo[2][3].maxTempCelsius}°C`;
+    tempDay4Low.textContent = `${locationInfo[2][3].minTempCelsius}°C`;
+    tempDay5High.textContent = `${locationInfo[2][4].maxTempCelsius}°C`;
+    tempDay5Low.textContent = `${locationInfo[2][4].minTempCelsius}°C`;
+    tempDay6High.textContent = `${locationInfo[2][5].maxTempCelsius}°C`;
+    tempDay6Low.textContent = `${locationInfo[2][5].minTempCelsius}°C`;
+    tempDay7High.textContent = `${locationInfo[2][6].maxTempCelsius}°C`;
+    tempDay7Low.textContent = `${locationInfo[2][6].minTempCelsius}°C`;
+    tempDay8High.textContent = `${locationInfo[2][7].maxTempCelsius}°C`;
+    tempDay8Low.textContent = `${locationInfo[2][7].minTempCelsius}°C`;
+  } else {
+    tempDay1High.textContent = `${locationInfo[2][0].maxTempFahrenheit}°F`;
+    tempDay1Low.textContent = `${locationInfo[2][0].minTempFahrenheit}°F`;
+    tempDay2High.textContent = `${locationInfo[2][1].maxTempFahrenheit}°F`;
+    tempDay2Low.textContent = `${locationInfo[2][1].minTempFahrenheit}°F`;
+    tempDay3High.textContent = `${locationInfo[2][2].maxTempFahrenheit}°F`;
+    tempDay3Low.textContent = `${locationInfo[2][2].minTempFahrenheit}°F`;
+    tempDay4High.textContent = `${locationInfo[2][3].maxTempFahrenheit}°F`;
+    tempDay4Low.textContent = `${locationInfo[2][3].minTempFahrenheit}°F`;
+    tempDay5High.textContent = `${locationInfo[2][4].maxTempFahrenheit}°F`;
+    tempDay5Low.textContent = `${locationInfo[2][4].minTempFahrenheit}°F`;
+    tempDay6High.textContent = `${locationInfo[2][5].maxTempFahrenheit}°F`;
+    tempDay6Low.textContent = `${locationInfo[2][5].minTempFahrenheit}°F`;
+    tempDay7High.textContent = `${locationInfo[2][6].maxTempFahrenheit}°F`;
+    tempDay7Low.textContent = `${locationInfo[2][6].minTempFahrenheit}°F`;
+    tempDay8High.textContent = `${locationInfo[2][7].maxTempFahrenheit}°F`;
+    tempDay8Low.textContent = `${locationInfo[2][7].minTempFahrenheit}°F`;
+  }
 }
+
+function changeUnits() {
+  if (isCelsius) {
+    isCelsius = false;
+  } else {
+    isCelsius = true;
+  }
+  domManipulation();
+}
+
+// Variable containing array of location results
+let locationInfo;
+let isCelsius = true;
 
 // FLOW CONTROL FUNCTION
 async function flowControl(locationOnProgramStartup) {
   const results = await inputFormHandler(locationOnProgramStartup);
-  domManipulation(results);
+  locationInfo = results;
+  console.log(locationInfo);
+  domManipulation();
 }
 
 // Convert time to AM/PM syntax
@@ -601,3 +654,7 @@ searchForm.addEventListener("keypress", async (event) => {
     flowControl();
   }
 });
+
+// CHANGE UNITS EVENT LISTENER
+const temperatureToday = document.querySelector(".temperature-today");
+temperatureToday.addEventListener("click", changeUnits);
