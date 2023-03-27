@@ -201,10 +201,32 @@ function domManipulation(results) {
   const snowLighteningContainerBackground = rootStyles.getPropertyValue(
     "--snow-lightening-container-background"
   );
+  const secondaryContentNightFontColor = rootStyles.getPropertyValue(
+    "--secondary-content-night-font-color"
+  );
+  const secondaryContentSunnyFontColor = rootStyles.getPropertyValue(
+    "--secondary-content-sunny-font-color"
+  );
+  const secondaryContentOvercastFontColor = rootStyles.getPropertyValue(
+    "--secondary-content-overcast-font-color"
+  );
+  const secondaryContentFogFontColor = rootStyles.getPropertyValue(
+    "--secondary-content-fog-font-color"
+  );
+  const secondaryContentRainFontColor = rootStyles.getPropertyValue(
+    "--secondary-content-rain-font-color"
+  );
+  const secondaryContentSnowFontColor = rootStyles.getPropertyValue(
+    "--secondary-content-snow-font-color"
+  );
+  const secondaryContentLighteningFontColor = rootStyles.getPropertyValue(
+    "--secondary-content-lightening-font-color"
+  );
   const background = document.querySelector("video");
   const contentWrapper = document.querySelector("#content-wrapper");
   const location = document.querySelector("#location");
   const block1 = document.querySelector(".block-1");
+  const block3 = document.querySelector(".block-3");
   const temperatureToday = document.querySelector(".temperature-today");
   const precipitationToday = document.querySelector(".precipitation-today");
   const humidityToday = document.querySelector(".humidity-today");
@@ -219,6 +241,7 @@ function domManipulation(results) {
   const timeIncrementTemperature6 = document.querySelector(".temperature-6");
   const timeIncrementTemperature7 = document.querySelector(".temperature-7");
   const timeIncrementTemperature8 = document.querySelector(".temperature-8");
+  const time = document.querySelectorAll(".time");
   const timeIncrementTime1 = document.querySelector(".time-1");
   const timeIncrementTime2 = document.querySelector(".time-2");
   const timeIncrementTime3 = document.querySelector(".time-3");
@@ -259,32 +282,54 @@ function domManipulation(results) {
   const tempDay7Low = document.querySelector(".temp-day-7 > div:last-child");
   const tempDay8High = document.querySelector(".temp-day-8 > div:first-child");
   const tempDay8Low = document.querySelector(".temp-day-8 > div:last-child");
+  const tempDayLow = document.querySelectorAll(
+    ".temperature-day > div:last-child"
+  );
 
   // Append updated weather info to the dom
   // Change background
-  //   background.setAttribute("src", `./images/backgrounds/night.mp4`);
-  //   background.setAttribute("src", `./images/backgrounds/sunny.mp4`); // Need to change font color for non highlighted content
-  //   background.setAttribute("src", `./images/backgrounds/overcast.mp4`); // Need to change font color for non highlighted content
-  //   background.setAttribute("src", `./images/backgrounds/fog.mp4`); // Need to change font color for non highlighted content
-  //   background.setAttribute("src", `./images/backgrounds/rain.mp4`);
-  //   background.setAttribute("src", `./images/backgrounds/snow.mp4`); // Need to change font color for non highlighted content
-  //   background.setAttribute("src", `./images/backgrounds/lightening.mp4`);
-
   if (!results[0].isDay) {
     background.setAttribute("src", `./images/backgrounds/night.mp4`);
     contentWrapper.style.backgroundColor = nightContainerBackground;
+    block3.style.color = secondaryContentNightFontColor;
+    dayAndTimeToday.style.color = secondaryContentNightFontColor;
+    conditionToday.style.color = secondaryContentNightFontColor;
+    time.forEach((element) => {
+      element.style.color = secondaryContentNightFontColor;
+    });
+    tempDayLow.forEach((element) => {
+      element.style.color = secondaryContentNightFontColor;
+    });
   } else if (
     results[0].condition === "Sunny" ||
     results[0].condition === "Partly cloudy"
   ) {
     background.setAttribute("src", `./images/backgrounds/sunny.mp4`);
     contentWrapper.style.backgroundColor = sunnyContainerBackground;
+    block3.style.color = secondaryContentSunnyFontColor;
+    dayAndTimeToday.style.color = secondaryContentSunnyFontColor;
+    conditionToday.style.color = secondaryContentSunnyFontColor;
+    time.forEach((element) => {
+      element.style.color = secondaryContentSunnyFontColor;
+    });
+    tempDayLow.forEach((element) => {
+      element.style.color = secondaryContentSunnyFontColor;
+    });
   } else if (
     results[0].condition === "Cloudy" ||
     results[0].condition === "Overcast"
   ) {
     background.setAttribute("src", `./images/backgrounds/overcast.mp4`);
     contentWrapper.style.backgroundColor = overcastRainContainerBackground;
+    block3.style.color = secondaryContentOvercastFontColor;
+    dayAndTimeToday.style.color = secondaryContentOvercastFontColor;
+    conditionToday.style.color = secondaryContentOvercastFontColor;
+    time.forEach((element) => {
+      element.style.color = secondaryContentOvercastFontColor;
+    });
+    tempDayLow.forEach((element) => {
+      element.style.color = secondaryContentOvercastFontColor;
+    });
   } else if (
     results[0].condition === "Mist" ||
     results[0].condition === "Fog" ||
@@ -292,6 +337,15 @@ function domManipulation(results) {
   ) {
     background.setAttribute("src", `./images/backgrounds/fog.mp4`);
     contentWrapper.style.backgroundColor = fogContainerBackground;
+    block3.style.color = secondaryContentFogFontColor;
+    dayAndTimeToday.style.color = secondaryContentFogFontColor;
+    conditionToday.style.color = secondaryContentFogFontColor;
+    time.forEach((element) => {
+      element.style.color = secondaryContentFogFontColor;
+    });
+    tempDayLow.forEach((element) => {
+      element.style.color = secondaryContentFogFontColor;
+    });
   } else if (
     results[0].condition === "Patchy rain possible" ||
     results[0].condition === "Patchy rain possible" ||
@@ -324,6 +378,15 @@ function domManipulation(results) {
   ) {
     background.setAttribute("src", `./images/backgrounds/rain.mp4`);
     contentWrapper.style.backgroundColor = overcastRainContainerBackground;
+    block3.style.color = secondaryContentRainFontColor;
+    dayAndTimeToday.style.color = secondaryContentRainFontColor;
+    conditionToday.style.color = secondaryContentRainFontColor;
+    time.forEach((element) => {
+      element.style.color = secondaryContentRainFontColor;
+    });
+    tempDayLow.forEach((element) => {
+      element.style.color = secondaryContentRainFontColor;
+    });
   } else if (
     results[0].condition === "Patchy light snow" ||
     results[0].condition === "Light snow" ||
@@ -337,6 +400,15 @@ function domManipulation(results) {
   ) {
     background.setAttribute("src", `./images/backgrounds/snow.mp4`);
     contentWrapper.style.backgroundColor = snowLighteningContainerBackground;
+    block3.style.color = secondaryContentSnowFontColor;
+    dayAndTimeToday.style.color = secondaryContentSnowFontColor;
+    conditionToday.style.color = secondaryContentSnowFontColor;
+    time.forEach((element) => {
+      element.style.color = secondaryContentSnowFontColor;
+    });
+    tempDayLow.forEach((element) => {
+      element.style.color = secondaryContentSnowFontColor;
+    });
   } else if (
     results[0].condition === "Patchy light rain with thunder" ||
     results[0].condition === "Moderate or heavy rain with thunder" ||
@@ -345,6 +417,15 @@ function domManipulation(results) {
   ) {
     background.setAttribute("src", `./images/backgrounds/lightening.mp4`);
     contentWrapper.style.backgroundColor = snowLighteningContainerBackground;
+    block3.style.color = secondaryContentLighteningFontColor;
+    dayAndTimeToday.style.color = secondaryContentLighteningFontColor;
+    conditionToday.style.color = secondaryContentLighteningFontColor;
+    time.forEach((element) => {
+      element.style.color = secondaryContentLighteningFontColor;
+    });
+    tempDayLow.forEach((element) => {
+      element.style.color = secondaryContentLighteningFontColor;
+    });
   }
 
   // Change location

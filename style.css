@@ -4,11 +4,20 @@
 }
 
 :root {
-  --night-container-background: rgba(32, 9, 116, 0.3);
+  --night-container-background: rgba(47, 18, 77, 0.3);
   --sunny-container-background: rgba(14, 67, 136, 0.3);
   --fog-container-background: rgba(115, 92, 146, 0.3);
   --overcast-rain-container-background: rgba(95, 98, 102, 0.3);
   --snow-lightening-container-background: rgba(64, 66, 68, 0.3);
+  --primary-content-font-color: white;
+  --secondary-content-font-color: #847988;
+  --secondary-content-night-font-color: #9aa0a6;
+  --secondary-content-sunny-font-color: #96c0ea;
+  --secondary-content-overcast-font-color: #4a4c4e;
+  --secondary-content-fog-font-color: #847988;
+  --secondary-content-rain-font-color: #9aa0a6;
+  --secondary-content-snow-font-color: #000000;
+  --secondary-content-lightening-font-color: #9aa0a6;
 }
 
 #myVideo {
@@ -30,7 +39,7 @@ body {
   width: 100%;
   margin: 0;
   font-family: "Roboto Bold";
-  color: white;
+  color: var(--primary-content-font-color);
 }
 
 #content-wrapper {
@@ -103,7 +112,7 @@ input {
   justify-content: center;
   padding-left: 10px;
   min-width: 146.4px;
-  color: #9aa0a6;
+  color: var(--secondary-content-font-color);
   white-space: nowrap;
 }
 
@@ -127,7 +136,7 @@ input {
 
 .day-and-time-today,
 .condition-today {
-  color: #9aa0a6;
+  color: var(--secondary-content-font-color);
 }
 
 #weather-forecast-trihoral {
@@ -155,7 +164,7 @@ input {
 }
 
 .time {
-  color: #9aa0a6;
+  color: var(--secondary-content-font-color);
 }
 
 #weather-forecast-day {
@@ -183,5 +192,5 @@ input {
 }
 
 .temperature-day > div:last-child {
-  color: #9aa0a6;
+  color: var(--secondary-content-font-color);
 }
