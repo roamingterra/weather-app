@@ -66,6 +66,8 @@ input {
   height: 33px;
   padding: 12px 20px 16px 0;
   font-size: 2rem;
+  white-space: nowrap;
+  overflow: scroll;
 }
 
 #weather-today {

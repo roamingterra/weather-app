@@ -6,8 +6,8 @@ async function getWeatherToday(location) {
       { mode: "cors" }
     );
     const json = await data.json();
-    const locationAPI = json.location.name;
-
+    console.log(json);
+    const locationAPI = `${json.location.name}, ${json.location.country}`;
     const currentDateAndTime = json.current.last_updated;
     const regexTime = /(\d{2}):(\d{2})$/;
     let currentTime = currentDateAndTime.match(regexTime)[0];
