@@ -395,7 +395,9 @@ function domManipulation() {
     locationInfo[0].condition === "Heavy snow" ||
     locationInfo[0].condition === "Heavy snow" ||
     locationInfo[0].condition === "Light snow showers" ||
-    locationInfo[0].condition === "Moderate or heavy snow showers"
+    locationInfo[0].condition === "Moderate or heavy snow showers" ||
+    locationInfo[0].condition === "Blowing snow" ||
+    locationInfo[0].condition === "Blizzard"
   ) {
     background.setAttribute("src", `./images/backgrounds/snow.mp4`);
     contentWrapper.style.backgroundColor = snowLighteningContainerBackground;

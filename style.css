@@ -127,14 +127,13 @@ input {
   display: flex;
   justify-content: flex-end;
   flex-grow: 1;
-  min-width: 402.914px;
+  min-width: 325px;
 }
 
 .block-4 {
   display: flex;
-  flex-direction: column;
   white-space: nowrap;
-  padding: 0 50px;
+  padding: 0 20px 0 50px;
 }
 
 .block-4 > div:first-child {
