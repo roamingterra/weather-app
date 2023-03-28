@@ -246,7 +246,7 @@ function convertTimeToAmPmString(currentTime, format) {
   return forecastedHourAmPmConverted;
 }
 
-// APPEND DATA TO THE DOM
+// APPEND MAIN CONTENT TO THE DOM AND STYLE
 function AppendMainContentAndStyle() {
   // Declare elements
   const rootStyles = window.getComputedStyle(document.documentElement);
@@ -543,6 +543,7 @@ function AppendMainContentAndStyle() {
   );
 }
 
+// APPEND TEMPERATURE AND WIND SPEED DATA TO THE DOM
 function AppendTemperatureAndWindSpeed() {
   // Declare elements
   const temperatureToday = document.querySelector(".temperature-today");
