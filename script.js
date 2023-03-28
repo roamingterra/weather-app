@@ -218,16 +218,11 @@ function convertTimeToAmPmString(currentTime, format) {
         }:${currentMinutes} p.m.`;
       }
     }
-  } else if (currentHour == 24) {
+  } else if (currentHour == 0) {
     if (format === "short") {
-      forecastedHourAmPmConverted = `${currentHour - 12}a.m.`;
+      forecastedHourAmPmConverted = `${12} a.m.`;
     } else if (format === "long") {
-      forecastedHourAmPmConverted = `${
-        currentHour - 12
-      }:${currentMinutes} a.m.`;
-      forecastedHourAmPmConverted = `${
-        currentHour - 12
-      }:${currentMinutes} p.m.`;
+      forecastedHourAmPmConverted = `${12}:${currentMinutes} a.m.`;
     }
   } else if (currentHour > 24) {
     currentHour -= 24;
@@ -238,9 +233,11 @@ function convertTimeToAmPmString(currentTime, format) {
     }
   } else {
     if (format === "short") {
-      forecastedHourAmPmConverted = `${currentHour}a.m.`;
+      forecastedHourAmPmConverted = `${Number(currentHour)}a.m.`;
     } else if (format === "long") {
-      forecastedHourAmPmConverted = `${currentHour}:${currentMinutes} a.m.`;
+      forecastedHourAmPmConverted = `${Number(
+        currentHour
+      )}:${currentMinutes} a.m.`;
     }
   }
   return forecastedHourAmPmConverted;
