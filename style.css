@@ -79,8 +79,6 @@ input {
   justify-content: flex-start;
   height: 100px;
   padding: 20px 0;
-  /* width: 695px;
-  min-width: 695px; 430px */
   overflow: scroll;
 }
 
@@ -100,7 +98,6 @@ input {
 
 .block-1 {
   width: 65px;
-  /* height: 75px; */
 }
 
 .block-1 > img {
@@ -147,7 +144,6 @@ input {
 
 #weather-forecast-trihoral {
   display: flex;
-  /* justify-content: center; */
   height: 60px;
   padding: 20px 0;
   overflow: scroll;
@@ -159,10 +155,7 @@ input {
   justify-content: space-between;
   align-items: center;
   width: 86.875px;
-  min-width: 86.875px; /* The fact that flex-shrink wasn't working is an issue. The fix I did is just a band-aid */
-  /* flex-grow: 1;
-  flex-shrink: 0;
-  flex-basis: auto; */
+  min-width: 86.875px;
 }
 
 .time-increment > .temperature {
@@ -188,7 +181,7 @@ input {
 }
 
 .day > .icon > img {
-  width: 80px; /* 80px */
+  width: 80px;
 }
 
 .temperature-day {

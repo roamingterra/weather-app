@@ -1,3 +1,7 @@
+// VARIABLE CONTAINING ARRAY OF LOCATION RESULTS AND BOOLEAN VARIABLE RECORDING CELSIUS VS FAHRENHEIT
+let locationInfo;
+let isCelsius = true;
+
 // FUNCTION FOR TODAY'S WEATHER
 async function getWeatherToday(location) {
   try {
@@ -181,8 +185,69 @@ async function inputFormHandler(locationOnProgramStartup) {
   return results;
 }
 
+// CHANGE UNITS TO BE USED DURING THE SESSION AND UPDATE DOM WITH VALUES WITH NEW UNITS
+function changeUnits() {
+  if (isCelsius) {
+    isCelsius = false;
+  } else {
+    isCelsius = true;
+  }
+  AppendTemperatureAndWindSpeed();
+}
+
+// CONVERT TIME TO AM/PM SYNTAX
+function convertTimeToAmPmString(currentTime, format) {
+  const regexHour = /^\d+(?=:)/;
+  const regexMinute = /(?<=:)\d+/;
+  let currentHour = currentTime.match(regexHour)[0];
+  const currentMinutes = currentTime.match(regexMinute)[0];
+  let forecastedHourAmPmConverted;
+  if (currentHour > 11 && currentHour < 24) {
+    if (format === "short") {
+      if (currentHour == 12) {
+        forecastedHourAmPmConverted = `${currentHour}p.m.`;
+      } else {
+        forecastedHourAmPmConverted = `${currentHour - 12}p.m.`;
+      }
+    } else if (format === "long") {
+      if (currentHour == 12) {
+        forecastedHourAmPmConverted = `${currentHour}:${currentMinutes} p.m.`;
+      } else {
+        forecastedHourAmPmConverted = `${
+          currentHour - 12
+        }:${currentMinutes} p.m.`;
+      }
+    }
+  } else if (currentHour == 24) {
+    if (format === "short") {
+      forecastedHourAmPmConverted = `${currentHour - 12}a.m.`;
+    } else if (format === "long") {
+      forecastedHourAmPmConverted = `${
+        currentHour - 12
+      }:${currentMinutes} a.m.`;
+      forecastedHourAmPmConverted = `${
+        currentHour - 12
+      }:${currentMinutes} p.m.`;
+    }
+  } else if (currentHour > 24) {
+    currentHour -= 24;
+    if (format === "short") {
+      forecastedHourAmPmConverted = `${currentHour}a.m.`;
+    } else if (format === "long") {
+      forecastedHourAmPmConverted = `${currentHour}:${currentMinutes} a.m.`;
+    }
+  } else {
+    if (format === "short") {
+      forecastedHourAmPmConverted = `${currentHour}a.m.`;
+    } else if (format === "long") {
+      forecastedHourAmPmConverted = `${currentHour}:${currentMinutes} a.m.`;
+    }
+  }
+  return forecastedHourAmPmConverted;
+}
+
 // APPEND DATA TO THE DOM
-function domManipulation() {
+function AppendMainContentAndStyle() {
   // Declare elements
   const rootStyles = window.getComputedStyle(document.documentElement);
   const nightContainerBackground = rootStyles.getPropertyValue(
@@ -224,22 +289,11 @@ function domManipulation() {
   const background = document.querySelector("video");
   const contentWrapper = document.querySelector("#content-wrapper");
   const location = document.querySelector("#location");
-  const block1 = document.querySelector(".block-1");
   const block3 = document.querySelector(".block-3");
-  const temperatureToday = document.querySelector(".temperature-today");
   const precipitationToday = document.querySelector(".precipitation-today");
   const humidityToday = document.querySelector(".humidity-today");
-  const windToday = document.querySelector(".wind-today");
   const dayAndTimeToday = document.querySelector(".day-and-time-today");
   const conditionToday = document.querySelector(".condition-today");
-  const timeIncrementTemperature1 = document.querySelector(".temperature-1");
-  const timeIncrementTemperature2 = document.querySelector(".temperature-2");
-  const timeIncrementTemperature3 = document.querySelector(".temperature-3");
-  const timeIncrementTemperature4 = document.querySelector(".temperature-4");
-  const timeIncrementTemperature5 = document.querySelector(".temperature-5");
-  const timeIncrementTemperature6 = document.querySelector(".temperature-6");
-  const timeIncrementTemperature7 = document.querySelector(".temperature-7");
-  const timeIncrementTemperature8 = document.querySelector(".temperature-8");
   const time = document.querySelectorAll(".time");
   const timeIncrementTime1 = document.querySelector(".time-1");
   const timeIncrementTime2 = document.querySelector(".time-2");
@@ -265,22 +319,6 @@ function domManipulation() {
   const iconDay6 = document.querySelector(".icon-6 > img");
   const iconDay7 = document.querySelector(".icon-7 > img");
   const iconDay8 = document.querySelector(".icon-8 > img");
-  const tempDay1High = document.querySelector(".temp-day-1 > div:first-child");
-  const tempDay1Low = document.querySelector(".temp-day-1 > div:last-child");
-  const tempDay2High = document.querySelector(".temp-day-2 > div:first-child");
-  const tempDay2Low = document.querySelector(".temp-day-2 > div:last-child");
-  const tempDay3High = document.querySelector(".temp-day-3 > div:first-child");
-  const tempDay3Low = document.querySelector(".temp-day-3 > div:last-child");
-  const tempDay4High = document.querySelector(".temp-day-4 > div:first-child");
-  const tempDay4Low = document.querySelector(".temp-day-4 > div:last-child");
-  const tempDay5High = document.querySelector(".temp-day-5 > div:first-child");
-  const tempDay5Low = document.querySelector(".temp-day-5 > div:last-child");
-  const tempDay6High = document.querySelector(".temp-day-6 > div:first-child");
-  const tempDay6Low = document.querySelector(".temp-day-6 > div:last-child");
-  const tempDay7High = document.querySelector(".temp-day-7 > div:first-child");
-  const tempDay7Low = document.querySelector(".temp-day-7 > div:last-child");
-  const tempDay8High = document.querySelector(".temp-day-8 > div:first-child");
-  const tempDay8Low = document.querySelector(".temp-day-8 > div:last-child");
   const tempDayLow = document.querySelectorAll(
     ".temperature-day > div:last-child"
   );
@@ -436,53 +474,21 @@ function domManipulation() {
   const imgBlock1 = document.querySelector(".block-1 > img");
   const regex = /(?<=\/)\d+(?=\.\w+$)/;
   const match = locationInfo[0].conditionIcon.match(regex)[0];
-  //   imgBlock1.setAttribute("alt", "weather condition icon");
   if (locationInfo[0].isDay) {
     imgBlock1.setAttribute("src", `./images/day/${match}.png`);
   } else {
     imgBlock1.setAttribute("src", `./images/night/${match}.png`);
   }
 
-  // Today's weather temperature
-  if (isCelsius) {
-    temperatureToday.textContent = `${locationInfo[0].temperatureCelsius}°C`;
-  } else {
-    temperatureToday.textContent = `${locationInfo[0].temperatureFahrenheit}°F`;
-  }
   // Today's weather block 3 info
   precipitationToday.textContent = `Precipitation: ${locationInfo[0].precipitationChance}%`;
   humidityToday.textContent = `Humidity: ${locationInfo[0].humidity}%`;
-  if (isCelsius) {
-    windToday.textContent = `Wind: ${locationInfo[0].wind_kph}Km/h`;
-  } else {
-    windToday.textContent = `Wind: ${locationInfo[0].wind_mph}mph`;
-  }
 
   // Today's weather block 4 info
   dayAndTimeToday.textContent = `${locationInfo[0].currentDayOfWeek} ${locationInfo[0].currentTime}`;
   conditionToday.textContent = `${locationInfo[0].condition}`;
 
-  // Weather forecast trihoral
-  if (isCelsius) {
-    timeIncrementTemperature1.textContent = `${locationInfo[1][0].tempCelsius}°C`;
-    timeIncrementTemperature2.textContent = `${locationInfo[1][1].tempCelsius}°C`;
-    timeIncrementTemperature3.textContent = `${locationInfo[1][2].tempCelsius}°C`;
-    timeIncrementTemperature4.textContent = `${locationInfo[1][3].tempCelsius}°C`;
-    timeIncrementTemperature5.textContent = `${locationInfo[1][4].tempCelsius}°C`;
-    timeIncrementTemperature6.textContent = `${locationInfo[1][5].tempCelsius}°C`;
-    timeIncrementTemperature7.textContent = `${locationInfo[1][6].tempCelsius}°C`;
-    timeIncrementTemperature8.textContent = `${locationInfo[1][7].tempCelsius}°C`;
-  } else {
-    timeIncrementTemperature1.textContent = `${locationInfo[1][0].tempFahrenheit}°F`;
-    timeIncrementTemperature2.textContent = `${locationInfo[1][1].tempFahrenheit}°F`;
-    timeIncrementTemperature3.textContent = `${locationInfo[1][2].tempFahrenheit}°F`;
-    timeIncrementTemperature4.textContent = `${locationInfo[1][3].tempFahrenheit}°F`;
-    timeIncrementTemperature5.textContent = `${locationInfo[1][4].tempFahrenheit}°F`;
-    timeIncrementTemperature6.textContent = `${locationInfo[1][5].tempFahrenheit}°F`;
-    timeIncrementTemperature7.textContent = `${locationInfo[1][6].tempFahrenheit}°F`;
-    timeIncrementTemperature8.textContent = `${locationInfo[1][7].tempFahrenheit}°F`;
-  }
-
+  // Weather forecast trihoral times
   timeIncrementTime1.textContent = `${locationInfo[1][0].timeOfDay}`;
   timeIncrementTime2.textContent = `${locationInfo[1][1].timeOfDay}`;
   timeIncrementTime3.textContent = `${locationInfo[1][2].timeOfDay}`;
@@ -492,7 +498,7 @@ function domManipulation() {
   timeIncrementTime7.textContent = `${locationInfo[1][6].timeOfDay}`;
   timeIncrementTime8.textContent = `${locationInfo[1][7].timeOfDay}`;
 
-  // Weather forecast daily
+  // Weather forecast daily times
   dayOfWeek1.textContent = `${locationInfo[2][0].dayOfTheWeek}`;
   dayOfWeek2.textContent = `${locationInfo[2][1].dayOfTheWeek}`;
   dayOfWeek3.textContent = `${locationInfo[2][2].dayOfTheWeek}`;
@@ -535,6 +541,71 @@ function domManipulation() {
     "src",
     `./images/day/${locationInfo[2][7].conditionIcon}.png`
   );
+}
+
+function AppendTemperatureAndWindSpeed() {
+  // Declare elements
+  const temperatureToday = document.querySelector(".temperature-today");
+  const windToday = document.querySelector(".wind-today");
+  const timeIncrementTemperature1 = document.querySelector(".temperature-1");
+  const timeIncrementTemperature2 = document.querySelector(".temperature-2");
+  const timeIncrementTemperature3 = document.querySelector(".temperature-3");
+  const timeIncrementTemperature4 = document.querySelector(".temperature-4");
+  const timeIncrementTemperature5 = document.querySelector(".temperature-5");
+  const timeIncrementTemperature6 = document.querySelector(".temperature-6");
+  const timeIncrementTemperature7 = document.querySelector(".temperature-7");
+  const timeIncrementTemperature8 = document.querySelector(".temperature-8");
+  const tempDay1High = document.querySelector(".temp-day-1 > div:first-child");
+  const tempDay1Low = document.querySelector(".temp-day-1 > div:last-child");
+  const tempDay2High = document.querySelector(".temp-day-2 > div:first-child");
+  const tempDay2Low = document.querySelector(".temp-day-2 > div:last-child");
+  const tempDay3High = document.querySelector(".temp-day-3 > div:first-child");
+  const tempDay3Low = document.querySelector(".temp-day-3 > div:last-child");
+  const tempDay4High = document.querySelector(".temp-day-4 > div:first-child");
+  const tempDay4Low = document.querySelector(".temp-day-4 > div:last-child");
+  const tempDay5High = document.querySelector(".temp-day-5 > div:first-child");
+  const tempDay5Low = document.querySelector(".temp-day-5 > div:last-child");
+  const tempDay6High = document.querySelector(".temp-day-6 > div:first-child");
+  const tempDay6Low = document.querySelector(".temp-day-6 > div:last-child");
+  const tempDay7High = document.querySelector(".temp-day-7 > div:first-child");
+  const tempDay7Low = document.querySelector(".temp-day-7 > div:last-child");
+  const tempDay8High = document.querySelector(".temp-day-8 > div:first-child");
+  const tempDay8Low = document.querySelector(".temp-day-8 > div:last-child");
+
+  // Today's weather temperature
+  if (isCelsius) {
+    temperatureToday.textContent = `${locationInfo[0].temperatureCelsius}°C`;
+  } else {
+    temperatureToday.textContent = `${locationInfo[0].temperatureFahrenheit}°F`;
+  }
+
+  // Today's weather wind speed
+  if (isCelsius) {
+    windToday.textContent = `Wind: ${locationInfo[0].wind_kph}Km/h`;
+  } else {
+    windToday.textContent = `Wind: ${locationInfo[0].wind_mph}mph`;
+  }
+
+  // Weather forecast trihoral
+  if (isCelsius) {
+    timeIncrementTemperature1.textContent = `${locationInfo[1][0].tempCelsius}°C`;
+    timeIncrementTemperature2.textContent = `${locationInfo[1][1].tempCelsius}°C`;
+    timeIncrementTemperature3.textContent = `${locationInfo[1][2].tempCelsius}°C`;
+    timeIncrementTemperature4.textContent = `${locationInfo[1][3].tempCelsius}°C`;
+    timeIncrementTemperature5.textContent = `${locationInfo[1][4].tempCelsius}°C`;
+    timeIncrementTemperature6.textContent = `${locationInfo[1][5].tempCelsius}°C`;
+    timeIncrementTemperature7.textContent = `${locationInfo[1][6].tempCelsius}°C`;
+    timeIncrementTemperature8.textContent = `${locationInfo[1][7].tempCelsius}°C`;
+  } else {
+    timeIncrementTemperature1.textContent = `${locationInfo[1][0].tempFahrenheit}°F`;
+    timeIncrementTemperature2.textContent = `${locationInfo[1][1].tempFahrenheit}°F`;
+    timeIncrementTemperature3.textContent = `${locationInfo[1][2].tempFahrenheit}°F`;
+    timeIncrementTemperature4.textContent = `${locationInfo[1][3].tempFahrenheit}°F`;
+    timeIncrementTemperature5.textContent = `${locationInfo[1][4].tempFahrenheit}°F`;
+    timeIncrementTemperature6.textContent = `${locationInfo[1][5].tempFahrenheit}°F`;
+    timeIncrementTemperature7.textContent = `${locationInfo[1][6].tempFahrenheit}°F`;
+    timeIncrementTemperature8.textContent = `${locationInfo[1][7].tempFahrenheit}°F`;
+  }
 
   // Daily Temperatures
   if (isCelsius) {
@@ -574,76 +645,13 @@ function domManipulation() {
   }
 }
 
-function changeUnits() {
-  if (isCelsius) {
-    isCelsius = false;
-  } else {
-    isCelsius = true;
-  }
-  domManipulation();
-}
-
-// Variable containing array of location results
-let locationInfo;
-let isCelsius = true;
-
 // FLOW CONTROL FUNCTION
 async function flowControl(locationOnProgramStartup) {
   const results = await inputFormHandler(locationOnProgramStartup);
   locationInfo = results;
   console.log(locationInfo);
-  domManipulation();
-}
-
-// Convert time to AM/PM syntax
-function convertTimeToAmPmString(currentTime, format) {
-  const regexHour = /^\d+(?=:)/;
-  const regexMinute = /(?<=:)\d+/;
-  let currentHour = currentTime.match(regexHour)[0];
-  const currentMinutes = currentTime.match(regexMinute)[0];
-  let forecastedHourAmPmConverted;
-  if (currentHour > 11 && currentHour < 24) {
-    if (format === "short") {
-      if (currentHour == 12) {
-        forecastedHourAmPmConverted = `${currentHour}p.m.`;
-      } else {
-        forecastedHourAmPmConverted = `${currentHour - 12}p.m.`;
-      }
-    } else if (format === "long") {
-      if (currentHour == 12) {
-        forecastedHourAmPmConverted = `${currentHour}:${currentMinutes} p.m.`;
-      } else {
-        forecastedHourAmPmConverted = `${
-          currentHour - 12
-        }:${currentMinutes} p.m.`;
-      }
-    }
-  } else if (currentHour == 24) {
-    if (format === "short") {
-      forecastedHourAmPmConverted = `${currentHour - 12}a.m.`;
-    } else if (format === "long") {
-      forecastedHourAmPmConverted = `${
-        currentHour - 12
-      }:${currentMinutes} a.m.`;
-      forecastedHourAmPmConverted = `${
-        currentHour - 12
-      }:${currentMinutes} p.m.`;
-    }
-  } else if (currentHour > 24) {
-    currentHour -= 24;
-    if (format === "short") {
-      forecastedHourAmPmConverted = `${currentHour}a.m.`;
-    } else if (format === "long") {
-      forecastedHourAmPmConverted = `${currentHour}:${currentMinutes} a.m.`;
-    }
-  } else {
-    if (format === "short") {
-      forecastedHourAmPmConverted = `${currentHour}a.m.`;
-    } else if (format === "long") {
-      forecastedHourAmPmConverted = `${currentHour}:${currentMinutes} a.m.`;
-    }
-  }
-  return forecastedHourAmPmConverted;
+  AppendMainContentAndStyle();
+  AppendTemperatureAndWindSpeed();
 }
 
 // DEFAULT CITY WEATHER ON STARTUP (MONTREAL)
