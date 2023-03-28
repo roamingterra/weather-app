@@ -649,12 +649,16 @@ function AppendTemperatureAndWindSpeed() {
 function loadingScreenStart() {
   const loadingScreen = document.querySelector("#loading-screen");
   loadingScreen.style.display = "flex";
+  loadingScreen.style.width = "100%";
+  loadingScreen.style.height = "100%";
 }
 
 function loadingScreenFinish() {
   setTimeout(() => {
     const loadingScreen = document.querySelector("#loading-screen");
     loadingScreen.style.display = "none";
+    loadingScreen.style.width = "0";
+    loadingScreen.style.height = "0";
   }, 1000);
 }
 
