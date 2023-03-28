@@ -646,13 +646,27 @@ function AppendTemperatureAndWindSpeed() {
   }
 }
 
+function loadingScreenStart() {
+  const loadingScreen = document.querySelector("#loading-screen");
+  loadingScreen.style.display = "flex";
+}
+
+function loadingScreenFinish() {
+  setTimeout(() => {
+    const loadingScreen = document.querySelector("#loading-screen");
+    loadingScreen.style.display = "none";
+  }, 1000);
+}
+
 // FLOW CONTROL FUNCTION
 async function flowControl(locationOnProgramStartup) {
+  loadingScreenStart();
   const results = await inputFormHandler(locationOnProgramStartup);
   locationInfo = results;
   console.log(locationInfo);
   AppendMainContentAndStyle();
   AppendTemperatureAndWindSpeed();
+  loadingScreenFinish();
 }
 
 // DEFAULT CITY WEATHER ON STARTUP (MONTREAL)
