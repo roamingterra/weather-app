@@ -1,5 +1,6 @@
 // VARIABLE CONTAINING ARRAY OF LOCATION RESULTS AND BOOLEAN VARIABLE RECORDING CELSIUS VS FAHRENHEIT
 let locationInfo;
+let lastLocation;
 let isCelsius = true;
 
 // FUNCTION FOR TODAY'S WEATHER
@@ -50,8 +51,7 @@ async function getWeatherToday(location) {
       wind_mph: wind_mph,
     };
   } catch (error) {
-    console.log(`${error}`);
-    console.log("Could not find the searched location");
+    console.log(`Error fetching todays weather for this location ${error}`);
   }
 }
 
@@ -102,8 +102,9 @@ async function getWeatherForecastedTrihoral(location) {
     }
     return weatherEveryThreeHoursLibrary;
   } catch (error) {
-    console.log(`${error}`);
-    console.log("Could not find the searched location");
+    console.log(
+      `Error fetching forecasted hourly weather for this location ${error}`
+    );
   }
 }
 
@@ -160,29 +161,33 @@ async function getWeatherForecastedDay(location) {
     }
     return WeatherDailyLibrary;
   } catch (error) {
-    console.log(`${error}`);
-    console.log("Could not find the searched location");
+    console.log(
+      `Error fetching forecasted daily weather for this location ${error}`
+    );
   }
 }
 
 // LOCATION INPUT FORM EVENT HANDLER FUNCTION
 async function inputFormHandler(locationOnProgramStartup) {
-  let location;
-  const searchForm = document.querySelector("input");
-  if (locationOnProgramStartup) {
-    location = locationOnProgramStartup;
-  } else {
-    location = searchForm.value;
-  }
-  searchForm.value = "";
+  try {
+    let location;
+    const searchForm = document.querySelector("input");
+    if (locationOnProgramStartup) {
+      location = locationOnProgramStartup;
+    } else {
+      location = searchForm.value;
+    }
+    searchForm.value = "";
 
-  // Resolve promises and finish with an array of processed data
-  const promise1 = getWeatherToday(location);
-  const promise2 = getWeatherForecastedTrihoral(location);
-  const promise3 = getWeatherForecastedDay(location);
-  const results = await Promise.all([promise1, promise2, promise3]);
-  console.log("SUCCESS!!");
-  return results;
+    // Resolve promises and finish with an array of processed data
+    const promise1 = getWeatherToday(location);
+    const promise2 = getWeatherForecastedTrihoral(location);
+    const promise3 = getWeatherForecastedDay(location);
+    const results = await Promise.all([promise1, promise2, promise3]);
+    return results;
+  } catch (error) {
+    console.log(`Error fetching weather data: ${error}`);
+  }
 }
 
 // CHANGE UNITS TO BE USED DURING THE SESSION AND UPDATE DOM WITH VALUES WITH NEW UNITS
@@ -662,12 +667,20 @@ function loadingScreenFinish() {
 // FLOW CONTROL FUNCTION
 async function flowControl(locationOnProgramStartup) {
   loadingScreenStart();
-  const results = await inputFormHandler(locationOnProgramStartup);
-  locationInfo = results;
-  console.log(locationInfo);
+  locationInfo = await inputFormHandler(locationOnProgramStartup);
+  if (
+    locationInfo[0] === undefined &&
+    locationInfo[1] === undefined &&
+    locationInfo[2] === undefined
+  ) {
+    flowControl(lastLocation);
+  }
   AppendMainContentAndStyle();
   AppendTemperatureAndWindSpeed();
   loadingScreenFinish();
+
+  // Store new location into this variable for use when user searches for a miss-typed location next time
+  lastLocation = locationInfo[0].location;
 }
 
 // DEFAULT CITY WEATHER ON STARTUP (MONTREAL)
