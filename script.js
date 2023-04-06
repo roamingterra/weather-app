@@ -63,6 +63,7 @@ async function getWeatherForecastedTrihoral(location) {
       { mode: "cors" }
     );
     const json = await data.json();
+    console.log(json);
     const currentDateAndTime = json.current.last_updated;
     const re = /(?<=\s)\d+(?=:)/;
     const currentHour = Number(currentDateAndTime.match(re)[0]);
@@ -88,81 +89,33 @@ async function getWeatherForecastedTrihoral(location) {
         "short"
       );
 
-      // Add weather for the current hour to the array of objects
+      // Get hourly forecasted condition icon code
+      let conditionIcon =
+        json.forecast.forecastday[currentDay].hour[forecastedHour].condition
+          .icon;
+      const regex = /(?<=\/)\d+(?=\.\w+$)/;
+      const match = conditionIcon.match(regex);
+      conditionIcon = match[0];
+
+      // Add weather, isDay info, and condition icon for the current hour to the array of objects
       const obj = {};
 
-      obj[`timeOfDay`] = forecastedHourAmPmConverted;
       obj[`tempCelsius`] = Math.round(
         json.forecast.forecastday[currentDay].hour[forecastedHour].temp_c
       );
       obj[`tempFahrenheit`] = Math.round(
         json.forecast.forecastday[currentDay].hour[forecastedHour].temp_f
       );
+      obj["conditionIcon"] = conditionIcon;
+      obj[`timeOfDay`] = forecastedHourAmPmConverted;
+      obj[`isDay`] =
+        json.forecast.forecastday[currentDay].hour[forecastedHour].is_day;
       weatherEveryThreeHoursLibrary.push(obj);
     }
     return weatherEveryThreeHoursLibrary;
   } catch (error) {
     console.log(
       `Error fetching forecasted hourly weather for this location ${error}`
-    );
-  }
-}
-
-// FUNCTION FOR FORECASTED WEATHER IN THE UPCOMING DAYS
-async function getWeatherForecastedDay(location) {
-  try {
-    const data = await fetch(
-      `https://api.weatherapi.com/v1/forecast.json?key=648299d0737e4276acf143636232003&q=${location}&days=8&aqi=no&alerts=no`,
-      { mode: "cors" }
-    );
-    const json = await data.json();
-
-    const WeatherDailyLibrary = [];
-    for (let i = 0; i < 8; i++) {
-      // Get day of the week
-      const currentDateArray = json.forecast.forecastday[i].date.split("-");
-      const currentDate = new Date(
-        `${currentDateArray[0]}, ${currentDateArray[1]}, ${currentDateArray[2]}`
-      );
-      const dayOfWeek = currentDate.toLocaleString("en-us", {
-        weekday: "short",
-      });
-
-      // Get forecasted condition code and temp of current day (high and low for both celsius and fahrenheit)
-      let conditionIcon = json.forecast.forecastday[i].day.condition.icon;
-      const regex = /(?<=\/)\d+(?=\.\w+$)/;
-      const match = conditionIcon.match(regex);
-      conditionIcon = match[0];
-
-      const maxTempCelsius = Math.round(
-        json.forecast.forecastday[i].day.maxtemp_c
-      );
-      const minTempCelsius = Math.round(
-        json.forecast.forecastday[i].day.mintemp_c
-      );
-      const maxTempFahrenheit = Math.round(
-        json.forecast.forecastday[i].day.maxtemp_f
-      );
-      const minTempFahrenheit = Math.round(
-        json.forecast.forecastday[i].day.mintemp_f
-      );
-
-      // Add weather for the current day to the array of objects
-      const obj = {};
-
-      obj["conditionIcon"] = conditionIcon;
-      obj["dayOfTheWeek"] = dayOfWeek;
-      obj["maxTempCelsius"] = maxTempCelsius;
-      obj["minTempCelsius"] = minTempCelsius;
-      obj["maxTempFahrenheit"] = maxTempFahrenheit;
-      obj["minTempFahrenheit"] = minTempFahrenheit;
-
-      WeatherDailyLibrary.push(obj);
-    }
-    return WeatherDailyLibrary;
-  } catch (error) {
-    console.log(
-      `Error fetching forecasted daily weather for this location ${error}`
     );
   }
 }
@@ -182,8 +135,7 @@ async function inputFormHandler(locationOnProgramStartup) {
     // Resolve promises and finish with an array of processed data
     const promise1 = getWeatherToday(location);
     const promise2 = getWeatherForecastedTrihoral(location);
-    const promise3 = getWeatherForecastedDay(location);
-    const results = await Promise.all([promise1, promise2, promise3]);
+    const results = await Promise.all([promise1, promise2]);
     return results;
   } catch (error) {
     console.log(`Error fetching weather data: ${error}`);
@@ -250,6 +202,7 @@ function convertTimeToAmPmString(currentTime, format) {
 
 // APPEND MAIN CONTENT TO THE DOM AND STYLE
 function AppendMainContentAndStyle() {
+  console.log(locationInfo);
   // Declare elements
   const rootStyles = window.getComputedStyle(document.documentElement);
   const nightContainerBackground = rootStyles.getPropertyValue(
@@ -305,22 +258,14 @@ function AppendMainContentAndStyle() {
   const timeIncrementTime6 = document.querySelector(".time-6");
   const timeIncrementTime7 = document.querySelector(".time-7");
   const timeIncrementTime8 = document.querySelector(".time-8");
-  const dayOfWeek1 = document.querySelector(".day-1");
-  const dayOfWeek2 = document.querySelector(".day-2");
-  const dayOfWeek3 = document.querySelector(".day-3");
-  const dayOfWeek4 = document.querySelector(".day-4");
-  const dayOfWeek5 = document.querySelector(".day-5");
-  const dayOfWeek6 = document.querySelector(".day-6");
-  const dayOfWeek7 = document.querySelector(".day-7");
-  const dayOfWeek8 = document.querySelector(".day-8");
-  const iconDay1 = document.querySelector(".icon-1 > img");
-  const iconDay2 = document.querySelector(".icon-2 > img");
-  const iconDay3 = document.querySelector(".icon-3 > img");
-  const iconDay4 = document.querySelector(".icon-4 > img");
-  const iconDay5 = document.querySelector(".icon-5 > img");
-  const iconDay6 = document.querySelector(".icon-6 > img");
-  const iconDay7 = document.querySelector(".icon-7 > img");
-  const iconDay8 = document.querySelector(".icon-8 > img");
+  const iconHour1 = document.querySelector(".icon-1 > img");
+  const iconHour2 = document.querySelector(".icon-2 > img");
+  const iconHour3 = document.querySelector(".icon-3 > img");
+  const iconHour4 = document.querySelector(".icon-4 > img");
+  const iconHour5 = document.querySelector(".icon-5 > img");
+  const iconHour6 = document.querySelector(".icon-6 > img");
+  const iconHour7 = document.querySelector(".icon-7 > img");
+  const iconHour8 = document.querySelector(".icon-8 > img");
   const tempDayLow = document.querySelectorAll(
     ".temperature-day > div:last-child"
   );
@@ -490,6 +435,96 @@ function AppendMainContentAndStyle() {
   dayAndTimeToday.textContent = `${locationInfo[0].currentDayOfWeek} ${locationInfo[0].currentTime}`;
   conditionToday.textContent = `${locationInfo[0].condition}`;
 
+  // Weather forecast trihoral condition icons
+  if (locationInfo[1][0].isDay) {
+    iconHour1.setAttribute(
+      "src",
+      `./images/day/${locationInfo[1][0].conditionIcon}.png`
+    );
+  } else {
+    iconHour1.setAttribute(
+      "src",
+      `./images/night/${locationInfo[1][0].conditionIcon}.png`
+    );
+  }
+  if (locationInfo[1][1].isDay) {
+    iconHour2.setAttribute(
+      "src",
+      `./images/day/${locationInfo[1][1].conditionIcon}.png`
+    );
+  } else {
+    iconHour2.setAttribute(
+      "src",
+      `./images/night/${locationInfo[1][1].conditionIcon}.png`
+    );
+  }
+  if (locationInfo[1][2].isDay) {
+    iconHour3.setAttribute(
+      "src",
+      `./images/day/${locationInfo[1][2].conditionIcon}.png`
+    );
+  } else {
+    iconHour3.setAttribute(
+      "src",
+      `./images/night/${locationInfo[1][2].conditionIcon}.png`
+    );
+  }
+  if (locationInfo[1][3].isDay) {
+    iconHour4.setAttribute(
+      "src",
+      `./images/day/${locationInfo[1][3].conditionIcon}.png`
+    );
+  } else {
+    iconHour4.setAttribute(
+      "src",
+      `./images/night/${locationInfo[1][3].conditionIcon}.png`
+    );
+  }
+  if (locationInfo[1][4].isDay) {
+    iconHour5.setAttribute(
+      "src",
+      `./images/day/${locationInfo[1][4].conditionIcon}.png`
+    );
+  } else {
+    iconHour5.setAttribute(
+      "src",
+      `./images/night/${locationInfo[1][4].conditionIcon}.png`
+    );
+  }
+  if (locationInfo[1][5].isDay) {
+    iconHour6.setAttribute(
+      "src",
+      `./images/day/${locationInfo[1][5].conditionIcon}.png`
+    );
+  } else {
+    iconHour6.setAttribute(
+      "src",
+      `./images/night/${locationInfo[1][5].conditionIcon}.png`
+    );
+  }
+  if (locationInfo[1][6].isDay) {
+    iconHour7.setAttribute(
+      "src",
+      `./images/day/${locationInfo[1][6].conditionIcon}.png`
+    );
+  } else {
+    iconHour7.setAttribute(
+      "src",
+      `./images/night/${locationInfo[1][6].conditionIcon}.png`
+    );
+  }
+  if (locationInfo[1][7].isDay) {
+    iconHour8.setAttribute(
+      "src",
+      `./images/day/${locationInfo[1][7].conditionIcon}.png`
+    );
+  } else {
+    iconHour8.setAttribute(
+      "src",
+      `./images/night/${locationInfo[1][7].conditionIcon}.png`
+    );
+  }
+
   // Weather forecast trihoral times
   timeIncrementTime1.textContent = `${locationInfo[1][0].timeOfDay}`;
   timeIncrementTime2.textContent = `${locationInfo[1][1].timeOfDay}`;
@@ -499,50 +534,6 @@ function AppendMainContentAndStyle() {
   timeIncrementTime6.textContent = `${locationInfo[1][5].timeOfDay}`;
   timeIncrementTime7.textContent = `${locationInfo[1][6].timeOfDay}`;
   timeIncrementTime8.textContent = `${locationInfo[1][7].timeOfDay}`;
-
-  // Weather forecast daily times
-  dayOfWeek1.textContent = `${locationInfo[2][0].dayOfTheWeek}`;
-  dayOfWeek2.textContent = `${locationInfo[2][1].dayOfTheWeek}`;
-  dayOfWeek3.textContent = `${locationInfo[2][2].dayOfTheWeek}`;
-  dayOfWeek4.textContent = `${locationInfo[2][3].dayOfTheWeek}`;
-  dayOfWeek5.textContent = `${locationInfo[2][4].dayOfTheWeek}`;
-  dayOfWeek6.textContent = `${locationInfo[2][5].dayOfTheWeek}`;
-  dayOfWeek7.textContent = `${locationInfo[2][6].dayOfTheWeek}`;
-  dayOfWeek8.textContent = `${locationInfo[2][7].dayOfTheWeek}`;
-
-  // Daily weather icons
-  iconDay1.setAttribute(
-    "src",
-    `./images/day/${locationInfo[2][0].conditionIcon}.png`
-  );
-  iconDay2.setAttribute(
-    "src",
-    `./images/day/${locationInfo[2][1].conditionIcon}.png`
-  );
-  iconDay3.setAttribute(
-    "src",
-    `./images/day/${locationInfo[2][2].conditionIcon}.png`
-  );
-  iconDay4.setAttribute(
-    "src",
-    `./images/day/${locationInfo[2][3].conditionIcon}.png`
-  );
-  iconDay5.setAttribute(
-    "src",
-    `./images/day/${locationInfo[2][4].conditionIcon}.png`
-  );
-  iconDay6.setAttribute(
-    "src",
-    `./images/day/${locationInfo[2][5].conditionIcon}.png`
-  );
-  iconDay7.setAttribute(
-    "src",
-    `./images/day/${locationInfo[2][6].conditionIcon}.png`
-  );
-  iconDay8.setAttribute(
-    "src",
-    `./images/day/${locationInfo[2][7].conditionIcon}.png`
-  );
 }
 
 // APPEND TEMPERATURE AND WIND SPEED DATA TO THE DOM
@@ -558,22 +549,6 @@ function AppendTemperatureAndWindSpeed() {
   const timeIncrementTemperature6 = document.querySelector(".temperature-6");
   const timeIncrementTemperature7 = document.querySelector(".temperature-7");
   const timeIncrementTemperature8 = document.querySelector(".temperature-8");
-  const tempDay1High = document.querySelector(".temp-day-1 > div:first-child");
-  const tempDay1Low = document.querySelector(".temp-day-1 > div:last-child");
-  const tempDay2High = document.querySelector(".temp-day-2 > div:first-child");
-  const tempDay2Low = document.querySelector(".temp-day-2 > div:last-child");
-  const tempDay3High = document.querySelector(".temp-day-3 > div:first-child");
-  const tempDay3Low = document.querySelector(".temp-day-3 > div:last-child");
-  const tempDay4High = document.querySelector(".temp-day-4 > div:first-child");
-  const tempDay4Low = document.querySelector(".temp-day-4 > div:last-child");
-  const tempDay5High = document.querySelector(".temp-day-5 > div:first-child");
-  const tempDay5Low = document.querySelector(".temp-day-5 > div:last-child");
-  const tempDay6High = document.querySelector(".temp-day-6 > div:first-child");
-  const tempDay6Low = document.querySelector(".temp-day-6 > div:last-child");
-  const tempDay7High = document.querySelector(".temp-day-7 > div:first-child");
-  const tempDay7Low = document.querySelector(".temp-day-7 > div:last-child");
-  const tempDay8High = document.querySelector(".temp-day-8 > div:first-child");
-  const tempDay8Low = document.querySelector(".temp-day-8 > div:last-child");
 
   // Today's weather temperature
   if (isCelsius) {
@@ -609,43 +584,6 @@ function AppendTemperatureAndWindSpeed() {
     timeIncrementTemperature7.textContent = `${locationInfo[1][6].tempFahrenheit}°F`;
     timeIncrementTemperature8.textContent = `${locationInfo[1][7].tempFahrenheit}°F`;
   }
-
-  // Daily Temperatures
-  if (isCelsius) {
-    tempDay1High.textContent = `${locationInfo[2][0].maxTempCelsius}°C`;
-    tempDay1Low.textContent = `${locationInfo[2][0].minTempCelsius}°C`;
-    tempDay2High.textContent = `${locationInfo[2][1].maxTempCelsius}°C`;
-    tempDay2Low.textContent = `${locationInfo[2][1].minTempCelsius}°C`;
-    tempDay3High.textContent = `${locationInfo[2][2].maxTempCelsius}°C`;
-    tempDay3Low.textContent = `${locationInfo[2][2].minTempCelsius}°C`;
-    tempDay4High.textContent = `${locationInfo[2][3].maxTempCelsius}°C`;
-    tempDay4Low.textContent = `${locationInfo[2][3].minTempCelsius}°C`;
-    tempDay5High.textContent = `${locationInfo[2][4].maxTempCelsius}°C`;
-    tempDay5Low.textContent = `${locationInfo[2][4].minTempCelsius}°C`;
-    tempDay6High.textContent = `${locationInfo[2][5].maxTempCelsius}°C`;
-    tempDay6Low.textContent = `${locationInfo[2][5].minTempCelsius}°C`;
-    tempDay7High.textContent = `${locationInfo[2][6].maxTempCelsius}°C`;
-    tempDay7Low.textContent = `${locationInfo[2][6].minTempCelsius}°C`;
-    tempDay8High.textContent = `${locationInfo[2][7].maxTempCelsius}°C`;
-    tempDay8Low.textContent = `${locationInfo[2][7].minTempCelsius}°C`;
-  } else {
-    tempDay1High.textContent = `${locationInfo[2][0].maxTempFahrenheit}°F`;
-    tempDay1Low.textContent = `${locationInfo[2][0].minTempFahrenheit}°F`;
-    tempDay2High.textContent = `${locationInfo[2][1].maxTempFahrenheit}°F`;
-    tempDay2Low.textContent = `${locationInfo[2][1].minTempFahrenheit}°F`;
-    tempDay3High.textContent = `${locationInfo[2][2].maxTempFahrenheit}°F`;
-    tempDay3Low.textContent = `${locationInfo[2][2].minTempFahrenheit}°F`;
-    tempDay4High.textContent = `${locationInfo[2][3].maxTempFahrenheit}°F`;
-    tempDay4Low.textContent = `${locationInfo[2][3].minTempFahrenheit}°F`;
-    tempDay5High.textContent = `${locationInfo[2][4].maxTempFahrenheit}°F`;
-    tempDay5Low.textContent = `${locationInfo[2][4].minTempFahrenheit}°F`;
-    tempDay6High.textContent = `${locationInfo[2][5].maxTempFahrenheit}°F`;
-    tempDay6Low.textContent = `${locationInfo[2][5].minTempFahrenheit}°F`;
-    tempDay7High.textContent = `${locationInfo[2][6].maxTempFahrenheit}°F`;
-    tempDay7Low.textContent = `${locationInfo[2][6].minTempFahrenheit}°F`;
-    tempDay8High.textContent = `${locationInfo[2][7].maxTempFahrenheit}°F`;
-    tempDay8Low.textContent = `${locationInfo[2][7].minTempFahrenheit}°F`;
-  }
 }
 
 function loadingScreenStart() {
@@ -668,11 +606,7 @@ function loadingScreenFinish() {
 async function flowControl(locationOnProgramStartup) {
   loadingScreenStart();
   locationInfo = await inputFormHandler(locationOnProgramStartup);
-  if (
-    locationInfo[0] === undefined &&
-    locationInfo[1] === undefined &&
-    locationInfo[2] === undefined
-  ) {
+  if (locationInfo[0] === undefined && locationInfo[1] === undefined) {
     flowControl(lastLocation);
   }
   AppendMainContentAndStyle();

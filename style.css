@@ -146,7 +146,7 @@ input {
 
 #weather-forecast-trihoral {
   display: flex;
-  height: 60px;
+  height: 100px; /*60px*/
   padding: 20px 0;
   overflow: scroll;
 }
@@ -164,35 +164,11 @@ input {
   font-size: 1.5rem;
 }
 
+.time-increment > .icon > img {
+  width: 50px;
+}
+
 .time {
-  color: var(--secondary-content-font-color);
-}
-
-#weather-forecast-day {
-  display: flex;
-  justify-content: space-between;
-  padding: 20px 0;
-  overflow: scroll;
-}
-
-.day {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-right: 7px;
-}
-
-.day > .icon > img {
-  width: 80px;
-}
-
-.temperature-day {
-  display: flex;
-  gap: 10px;
-  font-size: 1rem;
-}
-
-.temperature-day > div:last-child {
   color: var(--secondary-content-font-color);
 }
 
