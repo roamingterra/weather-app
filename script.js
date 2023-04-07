@@ -63,7 +63,6 @@ async function getWeatherForecastedTrihoral(location) {
       { mode: "cors" }
     );
     const json = await data.json();
-    console.log(json);
     const currentDateAndTime = json.current.last_updated;
     const re = /(?<=\s)\d+(?=:)/;
     const currentHour = Number(currentDateAndTime.match(re)[0]);
@@ -202,7 +201,6 @@ function convertTimeToAmPmString(currentTime, format) {
 
 // APPEND MAIN CONTENT TO THE DOM AND STYLE
 function AppendMainContentAndStyle() {
-  console.log(locationInfo);
   // Declare elements
   const rootStyles = window.getComputedStyle(document.documentElement);
   const nightContainerBackground = rootStyles.getPropertyValue(
