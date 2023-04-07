@@ -24,3 +24,6 @@ Future potential improvements:
 3. Add more info such as a feels like temperature, which I find to be very important, but I skipped out on it for now.
 
 4. Show the country abbreviated code rather than the country. I thought of doing this while fixing the logic of my code, but I decided that this would take too long for now. My idea is to Make a JSON file with a list of all the countries and their respective country codes, then have the js file sift through the JSON file for the appropriate country code before adding it to the dom.
+
+**_ April 6 2023 UPDATE _**
+Because my free trial for weatherapi expired, I no longer have access to forecasted data for more than 3 days, which completely rendered my daily forecast section entirely useless. For this update, I therefor removed this section entirely. Because there were weather condition icons in this section, which gave the app a lot of depth, I decided to add weather condition icons to the trihoral forecast section. The cool thing about these icons is that they are the appropriate day or night icons depending on the time of day. Finally, I updated replaced the rain.mp4 with a better quality one, which was able to be pushed through to github and looks more clear.
