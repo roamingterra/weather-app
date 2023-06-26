@@ -64,7 +64,7 @@ async function getWeatherForecastedTrihoral(location) {
     );
     const json = await data.json();
     const currentDateAndTime = json.current.last_updated;
-    const re = /(?<=\s)\d+(?=:)/;
+    const re = /\b\d+(?=:)/;
     const currentHour = Number(currentDateAndTime.match(re)[0]);
 
     //Temperature forecast of every three hours (starting from the hour that is closest to the current time)
@@ -92,7 +92,7 @@ async function getWeatherForecastedTrihoral(location) {
       let conditionIcon =
         json.forecast.forecastday[currentDay].hour[forecastedHour].condition
           .icon;
-      const regex = /(?<=\/)\d+(?=\.\w+$)/;
+      const regex = /\/(\d+)(?=\.\w+$)/;
       const match = conditionIcon.match(regex);
       conditionIcon = match[0];
 
@@ -154,9 +154,9 @@ function changeUnits() {
 // CONVERT TIME TO AM/PM SYNTAX
 function convertTimeToAmPmString(currentTime, format) {
   const regexHour = /^\d+(?=:)/;
-  const regexMinute = /(?<=:)\d+/;
-  let currentHour = currentTime.match(regexHour)[0];
-  const currentMinutes = currentTime.match(regexMinute)[0];
+  const regexMinute = /:(\d+)/;
+  let currentHour = currentTime.match(regexHour)[0].replace(":", ""); // Exclude the colon
+  const currentMinutes = currentTime.match(regexMinute)[1]; // Access the capturing group [1]
   let forecastedHourAmPmConverted;
   if (currentHour > 11 && currentHour < 24) {
     if (format === "short") {
@@ -417,7 +417,7 @@ function AppendMainContentAndStyle() {
 
   // Today's weather icon
   const imgBlock1 = document.querySelector(".block-1 > img");
-  const regex = /(?<=\/)\d+(?=\.\w+$)/;
+  const regex = /\/(\d+)(?=\.\w+$)/;
   const match = locationInfo[0].conditionIcon.match(regex)[0];
   if (locationInfo[0].isDay) {
     imgBlock1.setAttribute("src", `./images/day/${match}.png`);
