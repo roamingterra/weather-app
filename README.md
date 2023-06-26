@@ -27,3 +27,6 @@ Future potential improvements:
 
 **_ April 6 2023 UPDATE _**
 Because my free trial for weatherapi expired, I no longer have access to forecasted data for more than 3 days, which completely rendered my daily forecast section entirely useless. For this update, I therefor removed this section entirely. Because there were weather condition icons in this section, which gave the app a lot of depth, I decided to add weather condition icons to the trihoral forecast section. The cool thing about these icons is that they are the appropriate day or night icons depending on the time of day. Finally, I updated replaced the rain.mp4 with a better quality one, which was able to be pushed through to github and looks more clear, and I cropped the lightening.mp4 background, to remove a certain portion of the video that is unnecessary.
+
+**_ June 26 2023 UPDATE _**
+The site was not working on safari. The reason for this was that I was previously using lookbehind assertions in my regex expressions, which are not supported by the browser. I therefore converted all of these expressions to ones without lookbehind assertions. The site can now be viewed on Safari.
