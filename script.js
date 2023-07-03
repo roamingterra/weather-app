@@ -18,9 +18,12 @@ async function getWeatherToday(location) {
     currentTime = convertTimeToAmPmString(currentTime, "long");
 
     const currentDateArray = currentDateAndTime.split("-");
-    const currentDate = new Date(
-      `${currentDateArray[0]}, ${currentDateArray[1]}, ${currentDateArray[2]}`
-    );
+    const year = currentDateArray[0];
+    const month = currentDateArray[1];
+    const day = currentDateArray[2].split(" ")[0];
+    const hour = currentDateArray[2].split(" ")[1].split(":")[0];
+    const minute = currentDateArray[2].split(" ")[1].split(":")[1];
+    const currentDate = new Date(year, month - 1, day, hour, minute);
     const currentDayOfWeek = currentDate.toLocaleString("en-us", {
       weekday: "short",
     });
